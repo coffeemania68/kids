@@ -1,0 +1,444 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { School, Star, Heart, BookOpen, Sparkles, Trophy, Paint, Gift, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
+
+// 배경음악 및 효과음
+import bgm from '/public/audio/bgm.mp3';
+import successSound from '/public/audio/success.wav';
+import failSound from '/public/audio/fail.wav';
+import clickSound from '/public/audio/click.wav';
+
+
+const GumihoGame = () => {
+  const [gameState, setGameState] = useState('start');
+  const [character, setCharacter] = useState(() => {
+    const saved = localStorage.getItem('gumiho-character');
+    return saved ? JSON.parse(saved) : { hairColor: 'orange', eyeColor: 'brown', tailCount: 1 };
+  });
+  const [badges, setBadges] = useState(() => {
+    const saved = localStorage.getItem('gumiho-badges');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [storyIndex, setStoryIndex] = useState(() => {
+    const saved = localStorage.getItem('gumiho-storyIndex');
+    return saved ? JSON.parse(saved) : 0;
+  });
+  const [miniGameActive, setMiniGameActive] = useState(false); // 미니게임 활성화 여부
+  const [miniGameResult, setMiniGameResult] = useState(null); // 미니게임 결과
+    const bgmRef = useRef(null);
+  
+  const playSound = (sound) => {
+    if(sound) {
+      const audio = new Audio(sound);
+      audio.play();
+    }
+  };
+  useEffect(() => {
+    if (gameState === 'start') {
+        bgmRef.current = new Audio(bgm);
+        bgmRef.current.loop = true;
+        bgmRef.current.play().catch(e => console.warn("음악 자동 재생 실패:", e));
+      } else {
+          if(bgmRef.current) {
+              bgmRef.current.pause();
+              bgmRef.current.currentTime = 0;
+          }
+        }
+
+        return () => {
+           if(bgmRef.current) {
+              bgmRef.current.pause();
+              bgmRef.current.currentTime = 0;
+            }
+        };
+  }, [gameState]);
+
+    useEffect(() => {
+        localStorage.setItem('gumiho-character', JSON.stringify(character));
+    }, [character]);
+  
+  useEffect(() => {
+    localStorage.setItem('gumiho-badges', JSON.stringify(badges));
+  }, [badges]);
+  
+  useEffect(() => {
+    localStorage.setItem('gumiho-storyIndex', JSON.stringify(storyIndex));
+  }, [storyIndex]);
+
+  const stories = [
+      {
+        text: "학교에 도착하니 이상한 분위기가 감돌았다. 낯선 친구들이 보였는데... 어떻게 할까?",
+        options: [
+            { text: "인사하기", next: 1, success: false },
+            { text: "숨어서 관찰하기", next: 2, success: false },
+            { text: "학교 밖으로 나가기", next: 3, success: false }
+        ],
+      },
+      {
+        text: "인사를 건네니 친구들이 반갑게 맞아주었다! 친구들과 즐거운 시간을 보내는데, 갑자기 마법 대회가 시작된다!",
+         options: [
+            { text: "마법 대회 참가하기", next: 4, success: false },
+            { text: "구경하기", next: 5, success: false },
+             {text: "대회장을 몰래 빠져나가기", next: 6, success: false }
+        ]
+      },
+       {
+        text: "숨어서 관찰하니, 이상한 마법사들이 수상한 주문을 외우고 있었다. 어떻게 할까?",
+         options: [
+            { text: "마법사들에게 다가가기", next: 7, success: false },
+            { text: "도망가기", next: 8, success: false },
+             {text: "함께 주문 외우기", next: 9, success: false }
+        ]
+      },
+      {
+        text: "학교 밖으로 나가니, 놀라운 광경이 펼쳐졌다. 전설 속의 동물들이 살고 있는 숲이었다. 어디로 갈까?",
+         options: [
+            { text: "숲 속 깊은 곳으로 가기", next: 10, success: false },
+            { text: "숲 입구에서 머무르기", next: 11, success: false },
+             {text: "다시 학교로 돌아가기", next: 1, success: false }
+        ]
+      },
+      // 마법대회 참가
+      {
+        text: "마법 대회에서 우승했다! 모두가 나를 칭찬하고, 학교에서 인정받는 구미호가 되었다.",
+        ending: "마법 대회 우승",
+        options: [],
+          badgeColor:"text-yellow-500"
+      },
+      // 구경하기
+      {
+        text: "대회를 구경하면서, 다른 구미호들이 마법을 사용하는 모습에 감탄했다. 나도 열심히 노력해야지.",
+        ending: "평범한 구미호 학생",
+        options: [],
+          badgeColor:"text-gray-500"
+      },
+       // 대회장 몰래 빠져나가기
+      {
+        text: "대회장을 빠져나와 도서관에 도착했다. 책을 읽다가 도서관 지기 견습생이 되었다.",
+        ending: "도서관 지기 견습생",
+        options: [],
+           badgeColor:"text-blue-500"
+      },
+       // 마법사에게 다가가기
+      {
+        text: "마법사들에게 다가가니, 그들은 친절하게 마법을 가르쳐주었다. 나중에 마법사의 조수가 되었다.",
+         ending: "마법사의 조수",
+         options: [],
+         badgeColor:"text-indigo-500"
+      },
+      // 도망가기
+      {
+        text: "마법사들에게서 도망쳐 학교에 돌아왔다. 평범한 학생으로 남기로 했다.",
+        ending: "평범한 구미호 학생",
+        options: [],
+           badgeColor:"text-gray-500"
+      },
+      // 함께 주문 외우기
+      {
+        text: "마법사들과 함께 주문을 외우다가, 특별한 마법을 발견했다! 비밀 마법을 발견한 구미호로 유명해졌다.",
+        ending: "비밀 마법 발견",
+        options: [],
+           badgeColor:"text-purple-500"
+      },
+       // 숲 깊은 곳
+       {
+          text:"숲 속 깊은 곳에서 전설의 동물을 만났다. 숲의 수호자에게 선택받아 숲을 지키게 되었다.",
+          ending: "전설의 수호자",
+          options: [],
+            badgeColor:"text-green-500"
+       },
+       // 숲 입구
+      {
+        text: "숲 입구에서 아름다운 풍경을 감상하고 학교로 돌아왔다. 평범한 학교 생활을 하기로 했다.",
+         ending: "평범한 구미호 학생",
+         options: [],
+           badgeColor:"text-gray-500"
+      },
+      // 학생회장
+       {
+        text: "학교를 위해 노력한 결과, 학생회장이 되었다! 학교를 대표하는 구미호가 되었다.",
+        ending: "구미호 학교 학생회장",
+         options: [],
+         badgeColor:"text-red-500"
+      }
+  ];
+
+    const handleChoice = (nextIndex, success) => {
+        playSound(clickSound);
+        if (success) {
+          setMiniGameActive(true); // 성공하면 미니게임 시작
+            setMiniGameResult(null)
+        } else {
+            if(stories[nextIndex].ending) {
+                const newBadge = {
+                    title: stories[nextIndex].ending,
+                    color: stories[nextIndex].badgeColor,
+                }
+               setBadges(prevBadges => {
+                 const hasBadge = prevBadges.some(badge => badge.title === newBadge.title);
+                 return hasBadge ? prevBadges : [...prevBadges, newBadge];
+               });
+                
+                setGameState('start')
+               setStoryIndex(0)
+            }else {
+                setStoryIndex(nextIndex);
+            }
+            
+          }
+        
+    };
+
+  const StartScreen = () => (
+    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-pink-100 p-6">
+      <div className="animate-bounce text-4xl font-bold text-center text-orange-600 mb-8">
+        🦊 구미호를 찾아라! 🦊
+      </div>
+      
+      <Card className="max-w-2xl mx-auto bg-white/80 backdrop-blur">
+        <CardContent className="p-6">
+          <div className="grid grid-cols-3 gap-4 mb-8">
+            {badges.map((badge, i) => (
+              <div key={i} className="flex items-center justify-center p-4 bg-orange-50 rounded-lg">
+                <Trophy className={`w-8 h-8 ${badge.color}`} />
+              </div>
+            ))}
+          </div>
+          
+          <div className="space-y-4">
+            <Button
+              onClick={() => {
+                  playSound(clickSound);
+                  setGameState('customize')
+              }}
+              className="w-full py-6 text-xl bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 group"
+            >
+              <span className="group-hover:scale-110 transition-transform inline-block">
+                새 게임 시작하기
+              </span>
+            </Button>
+            
+            <Button
+              onClick={() => {
+                  playSound(clickSound);
+                  setGameState('game');
+              }}
+              className="w-full py-6 text-xl bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+              disabled={badges.length === 0}
+            >
+              이어하기
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="fixed bottom-4 right-4 animate-pulse">
+        <div className="bg-white/90 p-3 rounded-full shadow-lg">
+          <Gift className="w-6 h-6 text-pink-500" />
+        </div>
+        <div className="text-sm mt-2 text-center">
+          발견한 엔딩: {badges.length}/9
+        </div>
+      </div>
+    </div>
+  );
+
+  const CustomizeCharacter = () => (
+    <div className="p-6 bg-gradient-to-br from-purple-100 to-blue-100">
+      <Card className="max-w-2xl mx-auto">
+        <CardContent className="p-6">
+          <h2 className="text-2xl font-bold text-center mb-6">나만의 구미호 만들기</h2>
+          
+          <div className="space-y-6">
+            <div className="flex items-center justify-center gap-4">
+              {['orange', 'brown', 'silver'].map(color => (
+                <button
+                  key={color}
+                  onClick={() => {
+                      playSound(clickSound);
+                      setCharacter(c => ({...c, hairColor: color}))
+                  }}
+                  className={`w-12 h-12 rounded-full transition-transform hover:scale-110
+                    ${character.hairColor === color ? 'ring-4 ring-blue-500' : ''}
+                    bg-${color}-500`}
+                />
+              ))}
+            </div>
+
+            <div className="flex justify-center gap-4">
+              {[1, 3, 9].map(count => (
+                <button
+                  key={count}
+                  onClick={() => {
+                      playSound(clickSound);
+                      setCharacter(c => ({...c, tailCount: count}))
+                  }}
+                  className={`p-4 rounded-lg transition-all
+                    ${character.tailCount === count ? 'bg-orange-500 text-white' : 'bg-orange-100'}
+                    hover:bg-orange-400`}
+                >
+                  꼬리 {count}개
+                </button>
+              ))}
+            </div>
+
+            <Button
+              onClick={() => {
+                  playSound(clickSound);
+                  setGameState('game');
+              }}
+              className="w-full py-4 text-lg bg-gradient-to-r from-orange-500 to-pink-500"
+            >
+              완성!
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+    const GameScreen = () => {
+      const currentStory = stories[storyIndex];
+
+      return (
+      <div className="min-h-screen bg-gradient-to-br from-green-100 to-yellow-100 p-6">
+          <Card className="max-w-2xl mx-auto bg-white/80 backdrop-blur">
+        <CardContent className="p-6">
+             <h2 className="text-2xl font-bold text-center mb-6">이야기</h2>
+            <p className="text-lg mb-6">{currentStory.text}</p>
+            {currentStory.options && (
+              <div className="space-y-4">
+                {currentStory.options.map((option, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => handleChoice(option.next, option.success)}
+                    className="w-full py-4 text-lg bg-gradient-to-r from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 group"
+                   >
+                       <span className="group-hover:scale-110 transition-transform inline-block">
+                          {option.text}
+                        </span>
+                   </Button>
+                ))}
+              </div>
+            )}
+                </CardContent>
+          </Card>
+      </div>
+      );
+    };
+
+
+    const MiniGame = () => {
+        const [keysPressed, setKeysPressed] = useState([]);
+        const [sequence, setSequence] = useState(generateSequence());
+      const [gameMessage, setGameMessage] = useState(null);
+      
+      const arrowClasses = {
+           ArrowUp:"text-blue-500 animate-bounce",
+           ArrowDown:"text-red-500 animate-bounce",
+           ArrowLeft:"text-green-500 animate-bounce",
+           ArrowRight:"text-purple-500 animate-bounce"
+      }
+        const generateSequence = () => {
+             const arrows = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+            return Array.from({ length: 5 }, () => arrows[Math.floor(Math.random() * 4)]);
+        }
+
+      const handleKeyDown = (event) => {
+            if(event.code.startsWith('Arrow')) {
+                setKeysPressed(prevKeys => [...prevKeys, event.code]);
+            }
+       
+      };
+
+
+      useEffect(() => {
+            if (keysPressed.length > 0) {
+                const currentKey = keysPressed[keysPressed.length - 1];
+               const expectedKey = sequence[keysPressed.length -1];
+                if (currentKey !== expectedKey) {
+                    setGameMessage("실패!");
+                    playSound(failSound)
+                  setTimeout(() => {
+                    setMiniGameActive(false);
+                    setKeysPressed([])
+                     setSequence(generateSequence());
+                    setGameMessage(null);
+                   
+                  }, 1000);
+                   return;
+                   
+                }
+            }
+            
+             if (keysPressed.length === sequence.length) {
+                playSound(successSound);
+                  setGameMessage("성공!");
+                 setTimeout(() => {
+                     setMiniGameResult(true);
+                  setMiniGameActive(false);
+                    setKeysPressed([])
+                    setSequence(generateSequence());
+                     setGameMessage(null);
+                     const newBadge = {
+                         title: "꼬리 체조 챔피언",
+                         color:"text-pink-500"
+                     }
+                    setBadges(prevBadges => {
+                    const hasBadge = prevBadges.some(badge => badge.title === newBadge.title);
+                    return hasBadge ? prevBadges : [...prevBadges, newBadge];
+                  });
+                 }, 1000);
+            }
+
+        }, [keysPressed, sequence]);
+
+       useEffect(() => {
+            window.addEventListener('keydown', handleKeyDown);
+            return () => window.removeEventListener('keydown', handleKeyDown);
+       }, [handleKeyDown]);
+
+      return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+          <Card className="w-96">
+            <CardContent className="p-6">
+             <h3 className="text-xl font-bold mb-4">꼬리 체조 미니게임!</h3>
+          <div className="h-48 bg-orange-100 rounded-lg mb-4 flex items-center justify-center">
+                <div className="space-y-4">
+                 
+                  <div className="flex justify-center gap-2">
+                  {sequence.slice(0, keysPressed.length).map((item,index) => {
+                    const Icon = item === "ArrowUp" ? ArrowUp : item === "ArrowDown" ? ArrowDown : item === "ArrowLeft" ? ArrowLeft : ArrowRight;
+                       return (
+                        <Icon key={index} className="w-10 h-10 text-gray-500" />
+                      )
+                    })}
+                    
+                     {sequence.slice(keysPressed.length).map((item,index) => {
+                    const Icon = item === "ArrowUp" ? ArrowUp : item === "ArrowDown" ? ArrowDown : item === "ArrowLeft" ? ArrowLeft : ArrowRight;
+                       return (
+                        <Icon key={index} className={`w-10 h-10  ${arrowClasses[item]}`} />
+                      )
+                    })}
+                  </div>
+                  
+                    {gameMessage &&  <p>{gameMessage}</p>}
+                  </div>
+          </div>
+          </CardContent>
+        </Card>
+        </div>
+    )
+    };
+  return (
+    <div>
+      {gameState === 'start' && <StartScreen />}
+      {gameState === 'customize' && <CustomizeCharacter />}
+      {gameState === 'game' && <GameScreen />}
+      {miniGameActive && <MiniGame/>}
+    </div>
+  );
+};
+
+export default GumihoGame;
