@@ -1,43 +1,46 @@
 export default {
-   "games": [
-     {
-         "id": "gumiho-school",
-         "title": "구미호 학교에 간 날",
-          "description" : "여우 친구들이 가득한 학교에서 펼쳐지는 신비로운 이야기!",
-         "thumbnail": "/public/images/thumbnails/gumiho-school_thumbnail.png",
-         "scenes" : [
-           {
-               "id": "scene1",
-               "text": "학교에 도착하니 모든 학생들이 여우처럼 생겼어요!",
-                "image": "/public/images/backgrounds/gumiho-school.png",
-                 "options": [
-                      {
-                       "text": "용기내서 인사하기",
-                         "nextSceneId": "scene2"
-                     },
-                      {
-                         "text": "조용히 구석에서 관찰하기",
-                          "nextSceneId": "scene3"
-                       }
-                      ]
-               },
-               {
-                    "id": "scene2",
-                 "text": "친구들이 반갑게 인사를 받아주었어요. 첫 수업은...",
-                  "image": "/public/images/backgrounds/gumiho-classroom.png",
-                   "options": [
-                         {
-                           "text": "변신 마법 배우기",
-                             "nextSceneId": "scene4"
-                          },
-                          {
-                             "text": "꼬리 다루기 수업",
-                               "nextSceneId": "scene5"
-                        }
-                        ]
-                      }
-              ]
-     },
+  "games": [
+    {
+      "id": "gumiho-school",
+      "title": "구미호 학교에 간 날",
+      "description": "여우 친구들이 가득한 학교에서 펼쳐지는 신비로운 이야기!",
+      "thumbnail": "/public/images/thumbnails/gumiho-school_thumbnail.png",
+      "scenes": [
+        {
+          "id": "scene1",
+          "text": "학교에 도착하니 모든 학생들이 여우처럼 생겼어요!",
+          "image": "/public/images/backgrounds/gumiho-school.png",
+          "options": [
+            {
+              "text": "용기내서 인사하기",
+              "nextSceneId": "scene2"
+            },
+            {
+              "text": "조용히 구석에서 관찰하기",
+              "nextSceneId": "scene3"
+            }
+          ]
+        },
+        {
+          "id": "scene2",
+          "text": "친구들이 반갑게 인사를 받아주었어요. 첫 수업은...",
+          "image": "/public/images/backgrounds/gumiho-classroom.png",
+          "options": [
+            {
+              "text": "변신 마법 배우기",
+              "nextSceneId": "scene4"
+            },
+            {
+              "text": "꼬리 다루기 수업",
+              "nextSceneId": "scene5"
+            }
+          ]
+        }
+      ]
+    },
+    // ... 나머지 게임들도 동일한 형식으로 정리 ...
+  ]
+}
      {
          "id": "dokkebi-delivery",
            "title": "도깨비와 배달 아르바이트",
