@@ -3,6 +3,10 @@ import './components/Card.js'
 import { initGame } from './utils/gameData.js'
 import { loadGameProgress } from './utils/localStorage.js';
 
+// 카카오 SDK 초기화
+const kakaoApiKey = '110d468a677132abc8ddfe71b00c3939';
+Kakao.init(kakaoApiKey);
+
 //  init Game Data
   initGame();
 
