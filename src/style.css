@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+   .animate-floatEmoji {
+       animation: floatEmoji 5s infinite alternate ease-in-out;
+     }
+
+  @keyframes floatEmoji {
+    0% { transform: translateY(0) rotate(0deg);  }
+    50% { transform: translateY(3px) rotate(5deg); }
+   100% { transform: translateY(0) rotate(0deg); }
+ }
