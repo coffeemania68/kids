@@ -24,15 +24,20 @@
     <meta name="twitter:image" content="https://kids.mypawstory.com/public/images/thumbnails/gumiho-school_thumbnail.png">
   
     <style>
-      body {
-          background-color: #f8fafc;
+        body {
+           background-color: #f8fafc;
+           background-image: url('/public/images/backgrounds/main-background.jpg');
+          background-size: cover;
+           background-position: center;
+          background-repeat: no-repeat;
+          min-height: 100vh;
       }
     </style>
 
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     
 </head>
-<body class="p-4">
+<body class="p-4 relative">
     <div id="root"></div>
     <script type="module" src="/src/main.js"></script>
 </body>
