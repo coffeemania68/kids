@@ -55,48 +55,47 @@ function renderMainScreen() {
 
 // 게임 페이지 로드 함수
 function loadGameScreen(gameId){
-   console.log(gameId);
-   const selectedGame = gameData.games.find(game => game.id === gameId);
-
-    const gameScreenHTML = `
-        <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-pink-100">
-            <div class="bg-white p-8 rounded-lg shadow-xl max-w-md mx-auto">
-            <h2 class="text-2xl font-bold mb-4">${selectedGame.title}</h2>
-            <p class="mb-4">게임 설명 들어가는 곳</p>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" data-sceneid="${selectedGame.scenes[0].id}" onClick="loadScene(this,'${gameId}')">게임 시작</button>
-            </div>
-        </div>
-    `;
-    root.innerHTML = gameScreenHTML;
-
-}
-
-function loadScene(el,gameId){
-    const sceneId = el.dataset.sceneid;
+    console.log(gameId);
     const selectedGame = gameData.games.find(game => game.id === gameId);
-    const selectedScene = selectedGame.scenes.find(scene => scene.id === sceneId);
 
-    const sceneHTML = `
-        <div class="min-h-screen bg-gradient-to-br from-blue-100 to-pink-100 p-6 flex items-center justify-center">
-          <div class="max-w-2xl mx-auto bg-white/80 backdrop-blur p-6 rounded-lg">
-              <h2 class="text-2xl font-bold text-center mb-6">${selectedGame.title}</h2>
-              <p class="text-lg mb-6">${selectedScene.text}</p>
-             <div class="space-y-4">
-              ${selectedScene.options.map(option => `
-                <button
-                     onClick="loadScene(this,'${gameId}')"
-                   data-sceneid="${option.nextSceneId}"
-                   class="w-full py-4 text-lg bg-gradient-to-r from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 group"
-                  >
-                    <span class="group-hover:scale-110 transition-transform inline-block">
-                    ${option.text}
-                    </span>
-                </button>
-               `).join('')}
-            </div>
-          </div>
-        </div>
-    `;
-    root.innerHTML = sceneHTML;
-}
-renderMainScreen();
+        const gameScreenHTML = `
+         <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-pink-100">
+             <div class="bg-white p-8 rounded-lg shadow-xl max-w-md mx-auto">
+                <h2 class="text-2xl font-bold mb-4">${selectedGame.title}</h2>
+                <p class="mb-4">게임 설명 들어가는 곳</p>
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" data-sceneid="${selectedGame.scenes[0].id}" onClick="loadScene(this,'${gameId}')">게임 시작</button>
+              </div>
+           </div>
+        `;
+        root.innerHTML = gameScreenHTML;
+   }
+
+   function loadScene(el,gameId){
+       const sceneId = el.dataset.sceneid;
+       const selectedGame = gameData.games.find(game => game.id === gameId);
+        const selectedScene = selectedGame.scenes.find(scene => scene.id === sceneId);
+
+       const sceneHTML = `
+           <div class="min-h-screen bg-gradient-to-br from-blue-100 to-pink-100 p-6 flex items-center justify-center">
+             <div class="max-w-2xl mx-auto bg-white/80 backdrop-blur p-6 rounded-lg">
+                  <h2 class="text-2xl font-bold text-center mb-6">${selectedGame.title}</h2>
+                   <p class="text-lg mb-6">${selectedScene.text}</p>
+                  <div class="space-y-4">
+                   ${selectedScene.options.map(option => `
+                     <button
+                        onClick="loadScene(this,'${gameId}')"
+                      data-sceneid="${option.nextSceneId}"
+                      class="w-full py-4 text-lg bg-gradient-to-r from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 group"
+                     >
+                       <span class="group-hover:scale-110 transition-transform inline-block">
+                       ${option.text}
+                       </span>
+                    </button>
+                   `).join('')}
+                 </div>
+              </div>
+           </div>
+       `;
+       root.innerHTML = sceneHTML;
+    }
+    renderMainScreen();
