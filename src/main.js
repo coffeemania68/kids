@@ -1,19 +1,22 @@
-      import './components/Button.js'
-    import './components/Card.js'
-    import { initGame, getGameData } from './utils/gameData.js'
-    import { loadGameProgress } from './utils/localStorage.js';
+import './components/Button.js'
+import './components/Card.js'
+import { initGame, getGameData } from './utils/gameData.js'
+import { loadGameProgress } from './utils/localStorage.js';
 
+// 카카오 SDK 초기화
+const kakaoApiKey = '110d468a677132abc8ddfe71b00c3939';
+// Kakao.init(kakaoApiKey); // 기존 코드 삭제
+
+//  init Game Data
+initGame();
+const gameData = getGameData();
+
+const root = document.getElementById('root');
+
+function renderMainScreen() {
     // 카카오 SDK 초기화
-    const kakaoApiKey = '110d468a677132abc8ddfe71b00c3939';
-    Kakao.init(kakaoApiKey);
-
-    //  init Game Data
-    initGame();
-     const gameData = getGameData();
-
-    const root = document.getElementById('root');
-
-    function renderMainScreen() {
+     Kakao.init(kakaoApiKey); // 이동된 코드
+      
       const mainScreenHTML = `
        <div class="max-w-4xl mx-auto">
               <h1 class="text-3xl font-bold mb-6 text-center">12종 게임 시리즈</h1>
