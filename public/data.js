@@ -38,9 +38,6 @@ export default {
         }
       ]
     },
-    // ... 나머지 게임들도 동일한 형식으로 정리 ...
-  ]
-}
      {
          "id": "dokkebi-delivery",
            "title": "도깨비와 배달 아르바이트",
