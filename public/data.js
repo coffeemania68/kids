@@ -1,4 +1,4 @@
-   export default  {
+export default  {
         "games": [
             {
                 "id": "gumiho-school",
