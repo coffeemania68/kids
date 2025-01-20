@@ -1,19 +1,19 @@
 import './components/Button.js'
-import './components/Card.js'
-import { initGame, getGameData } from './utils/gameData.js'
-import { loadGameProgress, saveGameProgress } from './utils/localStorage.js';
+    import './components/Card.js'
+    import { initGame, getGameData } from './utils/gameData.js'
+    import { loadGameProgress,saveGameProgress } from './utils/localStorage.js';
 
-// 카카오 SDK 초기화
-const kakaoApiKey = '110d468a677132abc8ddfe71b00c3939';
+    // 카카오 SDK 초기화
+    const kakaoApiKey = '110d468a677132abc8ddfe71b00c3939';
+    Kakao.init(kakaoApiKey);
 
+    //  init Game Data
+    initGame();
+      const gameData = getGameData();
 
-//  init Game Data
-initGame();
-  const gameData = getGameData();
+      const root = document.getElementById('root');
 
-  const root = document.getElementById('root');
-
-  const emojis = ['🦊','🍦','🌷','🌟','🐶', '🌈', '🍉', '🍄', '🚀', '🎈'];
+      const emojis = ['🦊','🍦','🌷','🌟','🐶', '🌈', '🍉', '🍄', '🚀', '🎈'];
      function renderMainScreen() {
          // 카카오 SDK 초기화
       if (window.Kakao) {
