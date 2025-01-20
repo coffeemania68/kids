@@ -5,7 +5,6 @@ import './components/Button.js'
 
     // 카카오 SDK 초기화
     const kakaoApiKey = '110d468a677132abc8ddfe71b00c3939';
-    Kakao.init(kakaoApiKey);
 
     //  init Game Data
     initGame();
@@ -120,9 +119,3 @@ import './components/Button.js'
     document.addEventListener('DOMContentLoaded', () => {
           renderMainScreen();
        });
-    ```
-    *  `renderMainScreen` 함수에서 이모지 관련 코드를 `relative` div 태그 내부에 넣어서 해당 div에서만 동작하도록 수정했습니다.
-    *  `loadGameScreen` 에서도 이모지 애니메이션 코드를 추가했습니다.
-    *  이모지 크기를 랜덤하게 설정했습니다.
-
-*  `w-40`, `h-40` 으로 설정된 썸네일 버튼 크기를 `w-24`, `h-24`로 수정했습니다.
