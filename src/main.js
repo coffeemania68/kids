@@ -22,25 +22,42 @@ function renderMainScreen() {
     //     Kakao.init(kakaoApiKey);
     // }
 
-    const mainScreenHTML = `
-        <div class="max-w-4xl mx-auto relative">
-            <h1 class="text-3xl font-bold mb-6 text-center">12종 게임 시리즈</h1>
-            <div class="relative">
-                <div class="absolute w-full h-full pointer-events-none">
-                    ${emojis.map((emoji,i) => `
-                        <span style="animation-delay: ${Math.random()}s; top: ${Math.random() * 100}%; left: ${Math.random() * 100}%; font-size: ${isMobile() ? (Math.random() * 1.2 + 0.8) + 'rem' : (Math.random() * 2 + 3) + 'rem'};" class="absolute animate-floatEmoji">${emoji}</span>
-                    `).join("")}
-                </div>
-                <div class="grid grid-cols-3 gap-4 mb-8">
-                    ${gameData.games.map(game => `
-                        <div class="p-4 flex justify-center items-center">
-                            <button data-gameid="${game.id}" class="w-24 h-24 md:w-32 md:h-32 bg-cover bg-center rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300" style="background-image: url('${game.thumbnail}');">
-                            </button>
-                        </div>
-                    `).join('')}
-                </div>
+const mainScreenHTML = `
+        <div class="max-w-6xl mx-auto relative px-4">
+            <h1 class="text-3xl font-bold mb-6 text-center">어린이 게임 시리즈</h1>
+            <p class="text-xl text-center mb-8">재미있는 게임으로 배워보아요! ✨</p>
+            <!-- 이모지 컨테이너를 fixed로 변경하고 상/하단으로 분리 -->
+            <div class="fixed inset-x-0 top-0 h-20 pointer-events-none overflow-hidden">
+                ${emojis.slice(0, 5).map((emoji,i) => `
+                    <span style="animation-delay: ${i * 0.5}s; font-size: ${isMobile() ? '1.2rem' : '2rem'};" 
+                          class="absolute animate-floatTop">${emoji}</span>
+                `).join("")}
             </div>
-            <footer class="text-center mt-6 text-gray-500 text-sm">
+            <div class="fixed inset-x-0 bottom-0 h-20 pointer-events-none overflow-hidden">
+                ${emojis.slice(5).map((emoji,i) => `
+                    <span style="animation-delay: ${i * 0.5}s; font-size: ${isMobile() ? '1.2rem' : '2rem'};" 
+                          class="absolute animate-floatBottom">${emoji}</span>
+                `).join("")}
+            </div>
+            <!-- 게임 그리드 수정 -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+                ${gameData.games.map(game => `
+                    <div class="flex flex-col items-center">
+                        <button data-gameid="${game.id}" 
+                            class="w-full aspect-square rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300 overflow-hidden bg-white md:min-h-[300px]"
+                            style="background-image: url('${game.thumbnail}'); background-size: cover; background-position: center;">
+                        </button>
+                        <p class="mt-3 text-lg font-medium text-gray-700">${game.title}</p>
+                    </div>
+                `).join('')}
+            </div>
+            <footer class="text-center mt-12 text-gray-500 text-sm">
+                <!-- footer 내용 유지 -->
+            </footer>
+        </div>
+    `;
+    // ... 나머지 코드
+}
                 <p>지금까지 <span id="playerCount">0</span>명이 참여했어요!</p>
                 <p class="mb-2">주의사항: 저장된 데이터는 브라우저를 닫거나 삭제하면 초기화됩니다.</p>
                 <p>제작/광고문의: <a href="mailto:petsmoa2000@gmail.com">petsmoa2000@gmail.com</a></p>
