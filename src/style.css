@@ -2,41 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 이모지 애니메이션 정의 */
-@keyframes floatEmoji {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate(10px, -10px) rotate(5deg);
-  }
-  100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-}
-
-.animate-floatEmoji {
-  position: absolute;
-  animation: floatEmoji 3s ease-in-out infinite;
-}
-
-/* 홈 화면 이외의 페이지용 애니메이션 */
+/* 기본 애니메이션 정의 */
 @keyframes floatTop {
-  0% { transform: translate(-100%, 20px); }
-  50% { transform: translate(100%, 20px); }
-  100% { transform: translate(-100%, 20px); }
+  0% { transform: translateX(-100vw); }
+  100% { transform: translateX(100vw); }
 }
 
 @keyframes floatBottom {
-  0% { transform: translate(100%, calc(100vh - 40px)); }
-  50% { transform: translate(-100%, calc(100vh - 40px)); }
-  100% { transform: translate(100%, calc(100vh - 40px)); }
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100vw); }
 }
 
+/* 애니메이션 클래스 */
 .animate-floatTop {
+  position: absolute;
   animation: floatTop 15s linear infinite;
 }
 
 .animate-floatBottom {
+  position: absolute;
   animation: floatBottom 15s linear infinite;
+}
+
+/* 게임 시작 버튼 애니메이션 */
+@keyframes bounce {
+  0%, 100% { transform: translateY(-5px); }
+  50% { transform: translateY(5px); }
+}
+
+.animate-bounce {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+/* 반응형 스타일 */
+@media (min-width: 768px) {
+  .md\:min-h-\[300px\] {
+    min-height: 300px;
+  }
 }
