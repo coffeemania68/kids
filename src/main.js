@@ -3,27 +3,24 @@ import './components/Card.js'
 import { initGame, getGameData } from './utils/gameData.js'
 import { loadGameProgress, saveGameProgress } from './utils/localStorage.js';
 
-// 카카오 SDK 초기화
-const kakaoApiKey = '110d468a677132abc8ddfe71b00c3939';
+// 💡 임시로 카카오 관련 코드 주석처리
+// const kakaoApiKey = '110d468a677132abc8ddfe71b00c3939';
 
 //  init Game Data
 initGame();
 const gameData = getGameData();
-
 const root = document.getElementById('root');
-
 const emojis = ['🦊','🍦','🌷','🌟','🐶', '🌈', '🍉', '🍄', '🚀', '🎈'];
 
-// 💡 변경: 모바일 체크 함수 추가
 function isMobile() {
     return window.innerWidth <= 768;
 }
 
 function renderMainScreen() {
-    // 카카오 SDK 초기화
-    if (window.Kakao) {
-        Kakao.init(kakaoApiKey);
-    }
+    // 💡 카카오 초기화 코드 임시 주석처리
+    // if (window.Kakao) {
+    //     Kakao.init(kakaoApiKey);
+    // }
 
     const mainScreenHTML = `
         <div class="max-w-4xl mx-auto relative">
