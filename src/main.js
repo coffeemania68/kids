@@ -131,13 +131,6 @@ window.addEventListener('resize', () => {
     root.innerHTML = rootContent;
 });
 
-function loadGameProgress() {
-    return localStorage.getItem('playerCount') || 0;
-}
-
-function saveGameProgress(count) {
-    localStorage.setItem('playerCount', count);
-}
-
-// 초기 화면 렌더링
-renderMainScreen();
+document.addEventListener('DOMContentLoaded', () => {
+    renderMainScreen();
+});
