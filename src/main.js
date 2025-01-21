@@ -1,4 +1,4 @@
-import './components/Button.js'
+    import './components/Button.js'
     import './components/Card.js'
     import { initGame, getGameData } from './utils/gameData.js'
     import { loadGameProgress,saveGameProgress } from './utils/localStorage.js';
