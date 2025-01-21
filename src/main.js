@@ -22,49 +22,45 @@ function renderMainScreen() {
     //     Kakao.init(kakaoApiKey);
     // }
 
-const mainScreenHTML = `
- <div class="max-w-6xl mx-auto relative px-4">
-            <h1 class="text-2xl font-bold mb-6 text-center">어린이 게임 시리즈</h1>
-            <p class="text-lg text-center mb-8">재미있는 게임으로 배워보아요! ✨</p>
-            
-            <div class="fixed inset-x-0 top-0 h-32 pointer-events-none overflow-hidden">
-                ${emojis.slice(0, 5).map((emoji,i) => `
-                    <span style="animation-delay: ${i * 0.5}s;" class="absolute animate-floatTop">${emoji}</span>
-                `).join("")}
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 mb-12">
+ const mainScreenHTML = `
+        <div class="container mx-auto px-4 py-8">
+            <header class="main-header text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-royal-gold to-soft-gold bg-clip-text text-transparent">
+                    미니 미님 동화 게임
+                </h1>
+                <p class="text-lg md:text-xl text-soft-navy opacity-90">재미있는 게임으로 배워보아요! ✨</p>
+            </header>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 mb-12">
                 ${gameData.games.map(game => `
-                    <div class="flex flex-col items-center">
-                        <div class="relative w-full aspect-square">
-                            <button data-gameid="${game.id}" 
-                                class="w-full h-full rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-                                style="background-image: url('${game.thumbnail}'); background-size: cover; background-position: center;">
-                            </button>
-                            <div class="absolute bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm p-2 rounded-b-2xl">
-                                <p class="text-sm md:text-base font-medium text-center truncate">${game.title}</p>
+                    <div class="game-card transform transition-all duration-300 hover:scale-105">
+                        <button data-gameid="${game.id}" class="w-full relative">
+                            <div class="aspect-square rounded-2xl overflow-hidden">
+                                <img src="${game.thumbnail}" 
+                                     alt="${game.title}" 
+                                     class="w-full h-full object-cover"
+                                />
                             </div>
-                        </div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm p-3 rounded-b-2xl">
+                                <p class="text-center text-soft-navy font-medium truncate">
+                                    ${game.title}
+                                </p>
+                            </div>
+                        </button>
                     </div>
                 `).join('')}
             </div>
 
-            <div class="fixed inset-x-0 bottom-0 h-32 pointer-events-none overflow-hidden">
-                ${emojis.slice(5).map((emoji,i) => `
-                    <span style="animation-delay: ${i * 0.5}s;" class="absolute animate-floatBottom">${emoji}</span>
-                `).join("")}
-            </div>
-
-            <footer class="text-center mt-6 pb-8 text-gray-500 text-sm">
-                <p>지금까지 <span id="playerCount">0</span>명이 참여했어요!</p>
-                <p class="mb-2">주의사항: 저장된 데이터는 브라우저를 닫거나 삭제하면 초기화됩니다.</p>
-                <p>제작/광고문의: <a href="mailto:petsmoa2000@gmail.com">petsmoa2000@gmail.com</a></p>
-                <p class="mt-1">© Test Lab. All Rights Reserved.</p>
+            <footer class="text-center text-soft-navy/70 text-sm space-y-2">
+                <p>지금까지 <span id="playerCount" class="font-medium">0</span>명이 참여했어요!</p>
+                <p>주의사항: 저장된 데이터는 브라우저를 닫거나 삭제하면 초기화됩니다.</p>
+                <p>제작/광고문의: <a href="mailto:petsmoa2000@gmail.com" class="hover:text-soft-navy">petsmoa2000@gmail.com</a></p>
+                <p>© Test Lab. All Rights Reserved.</p>
             </footer>
         </div>
     `;
     root.innerHTML = mainScreenHTML;
-
+    
     const gameButtons = document.querySelectorAll('[data-gameid]');
     gameButtons.forEach(button => {
         button.addEventListener('click', (e) => {
