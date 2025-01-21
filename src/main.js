@@ -52,12 +52,6 @@ const mainScreenHTML = `
                 `).join('')}
             </div>
             <footer class="text-center mt-12 text-gray-500 text-sm">
-                <!-- footer 내용 유지 -->
-            </footer>
-        </div>
-    `;
-    // ... 나머지 코드
-}
                 <p>지금까지 <span id="playerCount">0</span>명이 참여했어요!</p>
                 <p class="mb-2">주의사항: 저장된 데이터는 브라우저를 닫거나 삭제하면 초기화됩니다.</p>
                 <p>제작/광고문의: <a href="mailto:petsmoa2000@gmail.com">petsmoa2000@gmail.com</a></p>
@@ -82,20 +76,31 @@ const mainScreenHTML = `
 }
 
 function loadGameScreen(gameId) {
-    console.log(gameId);
     const selectedGame = gameData.games.find(game => game.id === gameId);
     const gameScreenHTML = `
         <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-pink-100">
-            <div class="bg-white p-8 rounded-lg shadow-xl max-w-md mx-auto relative">
-                <!-- 💡 변경: 모바일/PC 이모지 크기 분기 -->
-                <div class="absolute w-full h-full pointer-events-none">
-                    ${emojis.map((emoji,i) => `
-                        <span style="animation-delay: ${Math.random()}s; top: ${Math.random() * 100}%; left: ${Math.random() * 100}%; font-size: ${isMobile() ? (Math.random() * 1.2 + 0.8) + 'rem' : (Math.random() * 2 + 3) + 'rem'};" class="absolute animate-floatEmoji">${emoji}</span>
-                    `).join("")}
-                </div>
-                <h2 class="text-2xl font-bold mb-4">${selectedGame.title}</h2>
-                <p class="mb-4">${selectedGame.description || '게임 설명이 없습니다.'}</p>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" data-sceneid="${selectedGame.scenes[0].id}">게임 시작</button>
+            <!-- 상단 이모지 컨테이너 -->
+            <div class="fixed inset-x-0 top-0 h-32 pointer-events-none overflow-hidden">
+                ${emojis.slice(0, 4).map((emoji,i) => `
+                    <span style="animation-delay: ${i * 0.5}s;" class="absolute animate-floatTop">${emoji}</span>
+                `).join("")}
+            </div>
+
+            <!-- 메인 컨텐츠 컨테이너 -->
+            <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md mx-auto relative">
+                <h2 class="text-3xl font-bold mb-4 text-center">${selectedGame.title}</h2>
+                <p class="mb-8 text-lg text-center">${selectedGame.description || '게임 설명이 없습니다.'}</p>
+                <button data-sceneid="${selectedGame.scenes[0].id}" 
+                    class="w-full py-4 px-8 bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-500 hover:to-purple-500 text-white text-xl font-bold rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 animate-bounce">
+                    게임 시작하기 🎮
+                </button>
+            </div>
+
+            <!-- 하단 이모지 컨테이너 -->
+            <div class="fixed inset-x-0 bottom-0 h-32 pointer-events-none overflow-hidden">
+                ${emojis.slice(4).map((emoji,i) => `
+                    <span style="animation-delay: ${i * 0.5}s;" class="absolute animate-floatBottom">${emoji}</span>
+                `).join("")}
             </div>
         </div>
     `;
