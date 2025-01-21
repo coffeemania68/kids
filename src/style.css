@@ -2,41 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 기본 애니메이션 정의 */
-@keyframes floatTop {
-  0% { transform: translateX(-100vw); }
-  100% { transform: translateX(100vw); }
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: linear-gradient(135deg, theme('colors.light-bg'), #FFFFFF);
+    min-height: 100vh;
 }
 
-@keyframes floatBottom {
-  0% { transform: translateX(100vw); }
-  100% { transform: translateX(-100vw); }
+.game-card {
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    transition: all 0.3s ease;
 }
 
-/* 애니메이션 클래스 */
-.animate-floatTop {
-  position: absolute;
-  animation: floatTop 15s linear infinite;
-}
-
-.animate-floatBottom {
-  position: absolute;
-  animation: floatBottom 15s linear infinite;
-}
-
-/* 게임 시작 버튼 애니메이션 */
-@keyframes bounce {
-  0%, 100% { transform: translateY(-5px); }
-  50% { transform: translateY(5px); }
-}
-
-.animate-bounce {
-  animation: bounce 2s ease-in-out infinite;
-}
-
-/* 반응형 스타일 */
-@media (min-width: 768px) {
-  .md\:min-h-\[300px\] {
-    min-height: 300px;
-  }
+.game-card:hover {
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15);
 }
